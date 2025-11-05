@@ -29,7 +29,7 @@ RUN git config --global --add safe.directory /app
 # Verify installation
 RUN composer --version && git --version
 
-# Add non root usert
+# Add non root user
 RUN useradd -ms /bin/bash appuser
 USER appuser
 
