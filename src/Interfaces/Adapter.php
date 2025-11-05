@@ -1,10 +1,12 @@
-<?php namespace Tarsana\Filesystem\Interfaces;
+<?php
+
+namespace Tarsana\Filesystem\Interfaces;
 
 /**
  * Filesystem adapter: defines the low level functions for a specific filesystem
  */
-interface Adapter {
-
+interface Adapter
+{
     /**
      * Tells if the given path is absolute.
      *
@@ -181,5 +183,4 @@ interface Adapter {
      * @return boolean
      */
     public function basename($path);
-
 }

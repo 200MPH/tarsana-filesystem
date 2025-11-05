@@ -1,3 +1,7 @@
-<?php namespace Tarsana\Filesystem\Interfaces;
+<?php
 
-interface Directory extends AbstractFile {}
+namespace Tarsana\Filesystem\Interfaces;
+
+interface Directory extends AbstractFile
+{
+}

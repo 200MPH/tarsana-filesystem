@@ -1,12 +1,12 @@
 <?php
-use Tarsana\Filesystem\Filesystem;
+
 use Tarsana\Filesystem\Adapters\Memory;
 
-class MemoryTest extends PHPUnit\Framework\TestCase {
-
+class MemoryTest extends PHPUnit\Framework\TestCase
+{
     protected $m;
 
-    public function setUp()
+    public function setUp(): void
     {
         /**
          * foo/
@@ -18,7 +18,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase {
          * lorem/
          *   ipsum/
          */
-        $m = new Memory;
+        $m = new Memory();
         $m->mkdir('foo/bar/baz', 0755, true);
         $m->mkdir('lorem/ipsum', 0755, true);
         $m->filePutContents('foo/todo.txt', 'Write Awesome Code');

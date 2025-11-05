@@ -5,16 +5,15 @@ use Tarsana\Filesystem\Adapters\Local;
 use Tarsana\Filesystem\Directory;
 use Tarsana\Filesystem\File;
 
-
-class FileTest extends PHPUnit\Framework\TestCase {
-
+class FileTest extends PHPUnit\Framework\TestCase
+{
     protected $filePath;
 
     protected $file;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->filePath = DEMO_DIR.'/temp.txt';
+        $this->filePath = DEMO_DIR . '/temp.txt';
         $this->file = new File($this->filePath);
     }
 
@@ -27,12 +26,10 @@ class FileTest extends PHPUnit\Framework\TestCase {
         $this->assertTrue(is_file($this->filePath));
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\FilesystemException
-     */
     public function test_throws_exception_when_directory_exists_with_same_path()
     {
-        $file = new File(DEMO_DIR.'/folder1');
+        $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
+        $file = new File(DEMO_DIR . '/folder1');
     }
 
     public function test_gets_filesystem_instance()
@@ -52,21 +49,19 @@ class FileTest extends PHPUnit\Framework\TestCase {
     {
         $this->assertEquals($this->filePath, $this->file->path());
 
-        $this->file->path(DEMO_DIR.'/folder2/temp.txt', true);
-        $this->assertEquals(DEMO_DIR.'/folder2/temp.txt', $this->file->path());
-        $this->assertTrue(is_file(DEMO_DIR.'/folder2/temp.txt'));
+        $this->file->path(DEMO_DIR . '/folder2/temp.txt', true);
+        $this->assertEquals(DEMO_DIR . '/folder2/temp.txt', $this->file->path());
+        $this->assertTrue(is_file(DEMO_DIR . '/folder2/temp.txt'));
 
         $this->file->path($this->filePath);
         $this->assertEquals($this->filePath, $this->file->path());
         $this->assertTrue(is_file($this->filePath));
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\FilesystemException
-     */
     public function test_throws_exception_when_already_exists_path()
     {
-        $path = DEMO_DIR.'/temp-2.txt';
+        $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
+        $path = DEMO_DIR . '/temp-2.txt';
         file_put_contents($path, '');
         $this->file->path($path);
     }
@@ -77,8 +72,8 @@ class FileTest extends PHPUnit\Framework\TestCase {
 
         $this->file->name('new-temp.txt');
         $this->assertEquals('new-temp.txt', $this->file->name());
-        $this->assertEquals(DEMO_DIR.'/new-temp.txt', $this->file->path());
-        $this->assertTrue(is_file(DEMO_DIR.'/new-temp.txt'));
+        $this->assertEquals(DEMO_DIR . '/new-temp.txt', $this->file->path());
+        $this->assertTrue(is_file(DEMO_DIR . '/new-temp.txt'));
 
         $this->file->name('temp.txt');
         $this->assertEquals('temp.txt', $this->file->name());
@@ -86,11 +81,9 @@ class FileTest extends PHPUnit\Framework\TestCase {
         $this->assertTrue(is_file($this->filePath));
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\FilesystemException
-     */
     public function test_throws_exception_when_invalid_name()
     {
+        $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
         $this->file->name('');
     }
 
@@ -159,14 +152,14 @@ class FileTest extends PHPUnit\Framework\TestCase {
     public function test_copy_as()
     {
         file_put_contents($this->filePath, 'Some content');
-        $copy = $this->file->copyAs(DEMO_DIR.'/copies/new-temp.txt');
+        $copy = $this->file->copyAs(DEMO_DIR . '/copies/new-temp.txt');
 
-        $this->assertTrue(is_file(DEMO_DIR.'/copies/new-temp.txt'));
+        $this->assertTrue(is_file(DEMO_DIR . '/copies/new-temp.txt'));
         $this->assertTrue($copy instanceof File);
-        $this->assertEquals(DEMO_DIR.'/copies/new-temp.txt', $copy->path());
-        $this->assertEquals('Some content', file_get_contents(DEMO_DIR.'/copies/new-temp.txt'));
+        $this->assertEquals(DEMO_DIR . '/copies/new-temp.txt', $copy->path());
+        $this->assertEquals('Some content', file_get_contents(DEMO_DIR . '/copies/new-temp.txt'));
 
-        (new Directory(DEMO_DIR.'/copies'))->remove();
+        (new Directory(DEMO_DIR . '/copies'))->remove();
     }
 
     public function test_gets_hash()
@@ -187,10 +180,9 @@ class FileTest extends PHPUnit\Framework\TestCase {
         $this->assertFalse(file_exists($this->filePath));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        remove(DEMO_DIR.'/temp.txt');
-        remove(DEMO_DIR.'/temp-2.txt');
+        remove(DEMO_DIR . '/temp.txt');
+        remove(DEMO_DIR . '/temp-2.txt');
     }
-
 }

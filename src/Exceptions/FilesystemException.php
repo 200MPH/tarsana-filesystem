@@ -1,4 +1,7 @@
-<?php namespace Tarsana\Filesystem\Exceptions;
+<?php
 
+namespace Tarsana\Filesystem\Exceptions;
 
-class FilesystemException extends \Exception {}
+class FilesystemException extends \Exception
+{
+}

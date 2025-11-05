@@ -3,15 +3,15 @@
 use Tarsana\Filesystem\Adapters\Local;
 use Tarsana\Filesystem\Resource\Buffer;
 
-class BufferTest extends PHPUnit\Framework\TestCase {
-
+class BufferTest extends PHPUnit\Framework\TestCase
+{
     protected $buffer;
 
     protected $path;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->path = DEMO_DIR.'/temp.txt';
+        $this->path = DEMO_DIR . '/temp.txt';
         file_put_contents($this->path, "Hello World !");
         $this->buffer = new Buffer($this->path);
     }
@@ -26,7 +26,7 @@ class BufferTest extends PHPUnit\Framework\TestCase {
 
     public function test_non_blocking()
     {
-        $in = new Buffer;
+        $in = new Buffer();
         $in->blocking(false);
         $this->assertEquals("", $in->read());
     }
@@ -73,17 +73,14 @@ class BufferTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\ResourceException
-     */
     public function test_throws_exception_if_empty_ending_word_given()
     {
+        $this->expectException(\Tarsana\Filesystem\Exceptions\ResourceException::class);
         $this->buffer->readUntil('');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        remove(DEMO_DIR.'/temp.txt');
+        remove(DEMO_DIR . '/temp.txt');
     }
-
 }

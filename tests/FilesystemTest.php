@@ -1,4 +1,5 @@
 <?php
+
 use Tarsana\Filesystem\Filesystem;
 use Tarsana\Filesystem\Adapters\Local;
 use Tarsana\Filesystem\Collection;
@@ -27,26 +28,24 @@ use Tarsana\Filesystem\File;
  * files.txt
  *
  */
-class LocalTest extends PHPUnit\Framework\TestCase {
-
+class FilesystemTest extends PHPUnit\Framework\TestCase
+{
     protected $fs;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fs = new Filesystem(DEMO_DIR);
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\FilesystemException
-     */
     public function test_throws_exception_if_root_directory_not_found()
     {
-        $fs = new Filesystem(DEMO_DIR.'/none-present-folder');
+        $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
+        $fs = new Filesystem(DEMO_DIR . '/none-present-folder');
     }
 
     public function test_gets_root_path()
     {
-        $this->assertEquals(DEMO_DIR.'/', $this->fs->path());
+        $this->assertEquals(DEMO_DIR . '/', $this->fs->path());
     }
 
     public function test_gets_the_type_of_path_or_pattern()
@@ -171,19 +170,15 @@ class LocalTest extends PHPUnit\Framework\TestCase {
         $this->assertEquals(4, $dirs->count());
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\FilesystemException
-     */
     public function test_throws_exception_if_file_not_found()
     {
+        $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
         $this->fs->file('none-present-file.txt');
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\FilesystemException
-     */
     public function test_throws_exception_if_directory_not_found()
     {
+        $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
         $this->fs->dir('none-present-folder');
     }
 
@@ -215,8 +210,8 @@ class LocalTest extends PHPUnit\Framework\TestCase {
         $this->assertFalse($this->fs->isDir('tmp/file.php'));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        remove(DEMO_DIR.'/tmp');
+        remove(DEMO_DIR . '/tmp');
     }
 }

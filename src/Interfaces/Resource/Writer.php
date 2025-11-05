@@ -1,10 +1,12 @@
-<?php namespace Tarsana\Filesystem\Interfaces\Resource;
+<?php
+
+namespace Tarsana\Filesystem\Interfaces\Resource;
 
 /**
  * Writes content into a text resource.
  */
-interface Writer {
-
+interface Writer
+{
     /**
      * Writes content.
      *
@@ -20,5 +22,4 @@ interface Writer {
      * @return self
      */
     public function writeLine($text);
-
 }

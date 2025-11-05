@@ -1,4 +1,6 @@
-<?php namespace Tarsana\Filesystem\Resource;
+<?php
+
+namespace Tarsana\Filesystem\Resource;
 
 use Tarsana\Filesystem\Interfaces\Resource\Buffer as BufferInterface;
 use Tarsana\Filesystem\Exceptions\ResourceException;
@@ -6,8 +8,8 @@ use Tarsana\Filesystem\Exceptions\ResourceException;
 /**
  * Reads and writes content from/to a resource.
  */
-class Buffer extends ResourceHanlder implements BufferInterface {
-
+class Buffer extends ResourceHanlder implements BufferInterface
+{
     /**
      * The current writting position in the file.
      *
@@ -109,8 +111,9 @@ class Buffer extends ResourceHanlder implements BufferInterface {
     public function write($content)
     {
         fseek($this->resource, $this->writePosition);
-        if(false === fwrite($this->resource, $content))
+        if (false === fwrite($this->resource, $content)) {
             throw new ResourceException("Unable to write content to resource");
+        }
         $this->writePosition = ftell($this->resource);
         return $this;
     }
@@ -156,5 +159,4 @@ class Buffer extends ResourceHanlder implements BufferInterface {
     {
         return $this->isReadable($resource) && $this->isWritable($resource);
     }
-
 }

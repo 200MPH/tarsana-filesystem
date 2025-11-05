@@ -2,13 +2,15 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-define('DEMO_DIR', __DIR__.'/demo');
+define('DEMO_DIR', __DIR__ . '/demo');
 
-function remove($path) {
-    if (is_file($path))
+function remove($path)
+{
+    if (is_file($path)) {
         return unlink($path);
+    }
     if (is_dir($path)) {
-        $path = rtrim($path, '/');
+        $path = rtrim((string) $path, '/');
         $files = glob($path . '/*', GLOB_MARK);
         foreach ($files as $file) {
             remove($file);

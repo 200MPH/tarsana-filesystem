@@ -3,23 +3,21 @@
 use Tarsana\Filesystem\Adapters\Local;
 use Tarsana\Filesystem\Resource\Reader;
 
-class ReaderTest extends PHPUnit\Framework\TestCase {
-
+class ReaderTest extends PHPUnit\Framework\TestCase
+{
     protected $reader;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $path = DEMO_DIR.'/temp.txt';
+        $path = DEMO_DIR . '/temp.txt';
         file_put_contents($path, "Hello World !" . PHP_EOL . "How are you ?");
         $this->reader = new Reader($path);
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\ResourceException
-     */
     public function test_fails_if_not_readable()
     {
-        $writer = new Reader(fopen(DEMO_DIR.'/temp.txt', 'w'));
+        $this->expectException(\Tarsana\Filesystem\Exceptions\ResourceException::class);
+        $writer = new Reader(fopen(DEMO_DIR . '/temp.txt', 'w'));
     }
 
     public function test_reads_whole_content()
@@ -62,11 +60,9 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\ResourceException
-     */
     public function test_throws_exception_if_empty_ending_word_given()
     {
+        $this->expectException(\Tarsana\Filesystem\Exceptions\ResourceException::class);
         $this->reader->readUntil('');
     }
 
@@ -90,7 +86,7 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
 
     public function test_non_blocking()
     {
-        $in = new Reader;
+        $in = new Reader();
         $in->blocking(false);
         $this->assertEquals("", $in->read());
     }
@@ -104,8 +100,8 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         $this->assertFalse(is_resource($resource));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        remove(DEMO_DIR.'/temp.txt');
+        remove(DEMO_DIR . '/temp.txt');
     }
 }

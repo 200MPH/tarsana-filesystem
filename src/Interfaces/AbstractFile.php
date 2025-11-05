@@ -1,7 +1,9 @@
-<?php namespace Tarsana\Filesystem\Interfaces;
+<?php
 
-interface AbstractFile {
+namespace Tarsana\Filesystem\Interfaces;
 
+interface AbstractFile
+{
     /**
      * Tells if the file exists or can be created. In case of a directory
      * for example, this will return false if a file exists with the
@@ -98,5 +100,4 @@ interface AbstractFile {
      * @throws Tarsana\Filesystem\Exceptions\FilesystemException if unable to create the destination file.
      */
     public function copyAs($dest);
-
 }

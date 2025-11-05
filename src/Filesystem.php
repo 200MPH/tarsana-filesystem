@@ -1,4 +1,6 @@
-<?php namespace Tarsana\Filesystem;
+<?php
+
+namespace Tarsana\Filesystem;
 
 use Tarsana\Filesystem\File;
 use Tarsana\Filesystem\Directory;
@@ -11,8 +13,8 @@ use Tarsana\Filesystem\Interfaces\Filesystem as FilesystemInterface;
 /**
  * Finds and handles files and directories within a root directory.
  */
-class Filesystem implements FilesystemInterface {
-
+class Filesystem implements FilesystemInterface
+{
     /**
      * The absolute root path of the filesystem.
      *
@@ -41,7 +43,7 @@ class Filesystem implements FilesystemInterface {
         }
         $this->adapter = $adapter;
 
-        if (! $this->isDir($rootPath, true)) {
+        if (! $this->isDir($rootPath)) {
             throw new FilesystemException("Cannot find the directory '{$rootPath}'");
         }
         $this->rootPath = $adapter->realpath($rootPath) . '/';
@@ -83,10 +85,12 @@ class Filesystem implements FilesystemInterface {
 
         $paths = $this->adapter->glob($pattern);
 
-        if (count($paths) == 0)
+        if (count($paths) == 0) {
             return 'nothing';
-        if (count($paths) == 1)
+        }
+        if (count($paths) == 1) {
             return ($this->adapter->isFile($paths[0])) ? 'file' : 'dir';
+        }
         return 'collection';
     }
 
@@ -102,22 +106,15 @@ class Filesystem implements FilesystemInterface {
         if (! $this->adapter->isAbsolute($path)) {
             $path = $this->rootPath . $path;
         }
-        switch ($type) {
-            case 'readable':
-                return $this->adapter->isReadable($path);
-            case 'writable':
-                return $this->adapter->isWritable($path);
-            case 'executable':
-                return $this->adapter->isExecutable($path);
-            case 'file':
-                return $this->adapter->isFile($path);
-            case 'dir':
-                return $this->adapter->isDir($path);
-            case 'any':
-                return $this->adapter->fileExists($path);
-            default:
-                throw new FilesystemException("Unknown file type '{$type}'");
-        }
+        return match ($type) {
+            'readable' => $this->adapter->isReadable($path),
+            'writable' => $this->adapter->isWritable($path),
+            'executable' => $this->adapter->isExecutable($path),
+            'file' => $this->adapter->isFile($path),
+            'dir' => $this->adapter->isDir($path),
+            'any' => $this->adapter->fileExists($path),
+            default => throw new FilesystemException("Unknown file type '{$type}'"),
+        };
     }
 
     /**
@@ -285,7 +282,7 @@ class Filesystem implements FilesystemInterface {
         if (! $this->adapter->isAbsolute($path)) {
             $path = $this->rootPath . $path;
         }
-        if (! $createMissing && ! $this->isFile($path, true)) {
+        if (! $createMissing && ! $this->isFile($path)) {
             throw new FilesystemException("Cannot find the file '{$path}'");
         }
 
@@ -308,7 +305,7 @@ class Filesystem implements FilesystemInterface {
             return $this->find('*')->files();
         }
 
-        $list = new Collection;
+        $list = new Collection();
         foreach ($paths as $path) {
             $list->add($this->file($path, $createMissing));
         }
@@ -330,7 +327,7 @@ class Filesystem implements FilesystemInterface {
         if (! $this->adapter->isAbsolute($path)) {
             $path = $this->rootPath . $path;
         }
-        if (! $createMissing && ! $this->isDir($path, true)) {
+        if (! $createMissing && ! $this->isDir($path)) {
             throw new FilesystemException("Cannot find the directory '{$path}'");
         }
         return new Directory($path, $this->adapter);
@@ -352,7 +349,7 @@ class Filesystem implements FilesystemInterface {
             return $this->find('*')->dirs();
         }
 
-        $list = new Collection;
+        $list = new Collection();
         foreach ($paths as $path) {
             $list->add($this->dir($path, $createMissing));
         }
@@ -371,9 +368,9 @@ class Filesystem implements FilesystemInterface {
         if (! $this->adapter->isAbsolute($pattern)) {
             $pattern = $this->rootPath . $pattern;
         }
-        $list = new Collection;
+        $list = new Collection();
         foreach ($this->adapter->glob($pattern) as $path) {
-            if ($this->isFile($path, true)) {
+            if ($this->isFile($path)) {
                 $list->add(new File($path, $this->adapter));
             } else {
                 $list->add(new Directory($path, $this->adapter));
@@ -393,13 +390,13 @@ class Filesystem implements FilesystemInterface {
         if (! $this->adapter->isAbsolute($path)) {
             $path = $this->rootPath . $path;
         }
-        if ($this->isFile($path, true)) {
+        if ($this->isFile($path)) {
             $this->adapter->unlink($path);
         } else {
             // clean the directory
             $path = rtrim($path, '/') . '/';
             foreach ($this->adapter->glob($path . '*') as $itemPath) {
-                $this->remove($itemPath, true);
+                $this->remove($itemPath);
             }
             // remove it
             $this->adapter->rmdir($path);
@@ -420,5 +417,4 @@ class Filesystem implements FilesystemInterface {
         }
         return $this;
     }
-
 }

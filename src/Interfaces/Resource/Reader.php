@@ -1,10 +1,12 @@
-<?php namespace Tarsana\Filesystem\Interfaces\Resource;
+<?php
+
+namespace Tarsana\Filesystem\Interfaces\Resource;
 
 /**
  * Reads content from a text resource.
  */
-interface Reader {
-
+interface Reader
+{
     /**
      * Reads a number of chars/bytes from the stream.
      * If `$count == 0`; reads all the available content.
@@ -38,5 +40,4 @@ interface Reader {
      * @return string
      */
     public function readUntil($end);
-
 }
