@@ -134,7 +134,7 @@ class Buffer extends ResourceHanlder implements BufferInterface
      *
      * @return string
      */
-    protected function defaultMode()
+    protected function defaultMode(): string
     {
         return 'a+b';
     }
@@ -144,7 +144,7 @@ class Buffer extends ResourceHanlder implements BufferInterface
      *
      * @return string|resource
      */
-    protected function defaultResource()
+    protected function defaultResource(): string
     {
         return 'php://memory';
     }

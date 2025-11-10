@@ -11,7 +11,7 @@ class Local implements Adapter
      *
      * @var self
      */
-    protected static $instance = null;
+    protected static $instance;
 
     /**
      * Gets the singleton instance.
@@ -257,7 +257,7 @@ class Local implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function createFile($path)
+    public function createFile($path): bool
     {
         $created = fopen($path, "w");
         if (false === $created) {

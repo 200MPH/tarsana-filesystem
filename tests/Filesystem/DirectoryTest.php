@@ -16,7 +16,7 @@ class DirectoryTest extends PHPUnit\Framework\TestCase
         $this->dir = new Directory($this->dirPath);
     }
 
-    public function test_creates_directory_if_missing()
+    public function test_creates_directory_if_missing(): void
     {
         $this->assertFalse(is_dir(DEMO_DIR . '/temp'));
 
@@ -26,18 +26,18 @@ class DirectoryTest extends PHPUnit\Framework\TestCase
         rmdir(DEMO_DIR . '/temp');
     }
 
-    public function test_throws_exception_when_cannot_create_the_directory()
+    public function test_throws_exception_when_cannot_create_the_directory(): void
     {
         $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
         $dir = new Directory(DEMO_DIR . '/files.txt');
     }
 
-    public function test_gets_filesystem_instance()
+    public function test_gets_filesystem_instance(): void
     {
         $this->assertTrue($this->dir->fs() instanceof Filesystem);
     }
 
-    public function test_exists()
+    public function test_exists(): void
     {
         $this->assertTrue($this->dir->exists());
 
@@ -48,7 +48,7 @@ class DirectoryTest extends PHPUnit\Framework\TestCase
         $this->assertFalse($otherDir->exists());
     }
 
-    public function test_gets_and_sets_absolute_path()
+    public function test_gets_and_sets_absolute_path(): void
     {
         $this->assertEquals($this->dirPath, $this->dir->path());
 
@@ -61,7 +61,7 @@ class DirectoryTest extends PHPUnit\Framework\TestCase
         $this->assertTrue(is_dir($this->dirPath));
     }
 
-    public function test_gets_and_sets_name()
+    public function test_gets_and_sets_name(): void
     {
         $this->assertEquals('folder1', $this->dir->name());
 
@@ -86,7 +86,7 @@ class DirectoryTest extends PHPUnit\Framework\TestCase
     //     $this->assertEquals('0777', $this->dir->perms());
     // }
 
-    public function test_copy_as()
+    public function test_copy_as(): void
     {
         $copy = $this->dir->copyAs(DEMO_DIR . '/copies/folder1');
 
@@ -100,7 +100,7 @@ class DirectoryTest extends PHPUnit\Framework\TestCase
         $copy->remove();
     }
 
-    public function test_remove()
+    public function test_remove(): void
     {
         $dir = new Directory(DEMO_DIR . '/temp');
         $this->assertTrue(

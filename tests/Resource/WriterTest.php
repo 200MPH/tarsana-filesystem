@@ -16,19 +16,19 @@ class WriterTest extends PHPUnit\Framework\TestCase
         $this->writer = new Writer($this->path);
     }
 
-    public function test_fails_if_not_writable()
+    public function test_fails_if_not_writable(): void
     {
         $this->expectException(\Tarsana\Filesystem\Exceptions\ResourceException::class);
         $writer = new Writer(fopen('php://memory', 'r'));
     }
 
-    public function test_constructor()
+    public function test_constructor(): void
     {
         $out = new Writer();
         $this->assertTrue($out instanceof Writer);
     }
 
-    public function test_close()
+    public function test_close(): void
     {
         $resource = fopen('php://memory', 'w');
         $out = new Writer($resource);
@@ -37,7 +37,7 @@ class WriterTest extends PHPUnit\Framework\TestCase
         $this->assertFalse(is_resource($resource));
     }
 
-    public function test_writes_content()
+    public function test_writes_content(): void
     {
         $this->writer->write("Hello");
         $this->assertEquals("Hello", file_get_contents($this->path));

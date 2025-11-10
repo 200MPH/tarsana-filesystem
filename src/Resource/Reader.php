@@ -73,7 +73,7 @@ class Reader extends ResourceHanlder implements ReaderInterface
      *
      * @return string
      */
-    protected function defaultMode()
+    protected function defaultMode(): string
     {
         return 'rb';
     }
@@ -83,7 +83,7 @@ class Reader extends ResourceHanlder implements ReaderInterface
      *
      * @return string|resource
      */
-    protected function defaultResource()
+    protected function defaultResource(): string
     {
         return 'php://stdin';
     }

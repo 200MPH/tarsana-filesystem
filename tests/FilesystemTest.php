@@ -37,18 +37,18 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         $this->fs = new Filesystem(DEMO_DIR);
     }
 
-    public function test_throws_exception_if_root_directory_not_found()
+    public function test_throws_exception_if_root_directory_not_found(): void
     {
         $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
         $fs = new Filesystem(DEMO_DIR . '/none-present-folder');
     }
 
-    public function test_gets_root_path()
+    public function test_gets_root_path(): void
     {
         $this->assertEquals(DEMO_DIR . '/', $this->fs->path());
     }
 
-    public function test_gets_the_type_of_path_or_pattern()
+    public function test_gets_the_type_of_path_or_pattern(): void
     {
         $this->assertEquals('file', $this->fs->whatIs('folder1/some-doc.txt'));
         $this->assertEquals('file', $this->fs->whatIs('folder1/*-doc.txt'));
@@ -59,20 +59,20 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         $this->assertEquals('collection', $this->fs->whatIs('folder*/*.mp3'));
     }
 
-    public function test_checks_if_file_exists()
+    public function test_checks_if_file_exists(): void
     {
         $this->assertTrue($this->fs->isFile('folder1/track.mp3'));
         $this->assertTrue($this->fs->isFile(DEMO_DIR . '/folder1/track.mp3'));
         $this->assertFalse($this->fs->isFile('folder1/track.txt'));
     }
 
-    public function test_checks_if_directory_exists()
+    public function test_checks_if_directory_exists(): void
     {
         $this->assertTrue($this->fs->isDir('folder4/folder42'));
         $this->assertFalse($this->fs->isDir('folder5'));
     }
 
-    public function test_checks_if_file_or_directory_exists()
+    public function test_checks_if_file_or_directory_exists(): void
     {
         $this->assertTrue($this->fs->isAny('folder1/track.mp3'));
         $this->assertFalse($this->fs->isAny('folder1/track.txt'));
@@ -80,7 +80,7 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         $this->assertFalse($this->fs->isAny('folder5'));
     }
 
-    public function test_checks_if_multiple_files_exist()
+    public function test_checks_if_multiple_files_exist(): void
     {
         $this->assertTrue($this->fs->areFiles([
             'folder1/track.mp3',
@@ -97,7 +97,7 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         ]));
     }
 
-    public function test_checks_if_multiple_directories_exist()
+    public function test_checks_if_multiple_directories_exist(): void
     {
         $this->assertTrue($this->fs->areDirs([
             'folder1',
@@ -113,7 +113,7 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         ]));
     }
 
-    public function test_checks_if_multiple_files_or_directories_exist()
+    public function test_checks_if_multiple_files_or_directories_exist(): void
     {
         $this->assertTrue($this->fs->areAny([
             'folder1',
@@ -129,7 +129,7 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         ]));
     }
 
-    public function test_gets_or_creates_files_by_name()
+    public function test_gets_or_creates_files_by_name(): void
     {
         $file = $this->fs->file('files.txt');
         $this->assertTrue($file instanceof File);
@@ -150,7 +150,7 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         $this->fs->dir('tmp')->remove();
     }
 
-    public function test_gets_or_creates_directories_by_name()
+    public function test_gets_or_creates_directories_by_name(): void
     {
         $dir = $this->fs->dir('folder1');
         $this->assertTrue($dir instanceof Directory);
@@ -170,19 +170,19 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(4, $dirs->count());
     }
 
-    public function test_throws_exception_if_file_not_found()
+    public function test_throws_exception_if_file_not_found(): void
     {
         $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
         $this->fs->file('none-present-file.txt');
     }
 
-    public function test_throws_exception_if_directory_not_found()
+    public function test_throws_exception_if_directory_not_found(): void
     {
         $this->expectException(\Tarsana\Filesystem\Exceptions\FilesystemException::class);
         $this->fs->dir('none-present-folder');
     }
 
-    public function test_gets_files_or_directories_matching_pattern()
+    public function test_gets_files_or_directories_matching_pattern(): void
     {
         $found = $this->fs->find('f*');
         $this->assertTrue($found instanceof Collection);
@@ -191,7 +191,7 @@ class FilesystemTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(4, $found->dirs()->count());
     }
 
-    public function test_removes_files_and_directories()
+    public function test_removes_files_and_directories(): void
     {
         $file = $this->fs->file('tmp/file.php', true);
         $this->assertTrue($this->fs->isFile('tmp/file.php'));

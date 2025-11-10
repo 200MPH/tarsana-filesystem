@@ -97,7 +97,7 @@ class Collection implements CollectionInterface
      */
     public function files()
     {
-        $filesList = array_filter($this->items, fn($item) => $item['instance'] instanceof FileInterface);
+        $filesList = array_filter($this->items, fn($item): bool => $item['instance'] instanceof FileInterface);
 
         $filesList = array_map(fn($item) => $item['instance'], $filesList);
 
@@ -111,7 +111,7 @@ class Collection implements CollectionInterface
      */
     public function dirs()
     {
-        $filesList = array_filter($this->items, fn($item) => $item['instance'] instanceof DirectoryInterface);
+        $filesList = array_filter($this->items, fn($item): bool => $item['instance'] instanceof DirectoryInterface);
 
         $filesList = array_map(fn($item) => $item['instance'], $filesList);
 

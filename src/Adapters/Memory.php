@@ -102,7 +102,7 @@ class Memory implements Adapter
      * @param  string $pattern
      * @return array
      */
-    public function glob($pattern)
+    public function glob($pattern): array
     {
         $matched = [];
         $pattern = $this->realpath($pattern);
@@ -184,7 +184,7 @@ class Memory implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function filePutContents($path, $content, $flags = 0)
+    public function filePutContents($path, $content, $flags = 0): bool
     {
         if (! $this->isFile($path) && !$this->createFile($path)) {
             return false;
@@ -244,7 +244,7 @@ class Memory implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function unlink($path)
+    public function unlink($path): bool
     {
         $this->at($path, null);
         return true;
@@ -256,7 +256,7 @@ class Memory implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function rmdir($path)
+    public function rmdir($path): bool
     {
         $path = $this->realpath($path) . '/';
         $length = strlen($path);
@@ -275,7 +275,7 @@ class Memory implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function rename($oldPath, $newPath)
+    public function rename($oldPath, $newPath): bool
     {
         $old = $this->at($oldPath);
         $new = $this->at($newPath);
@@ -326,7 +326,7 @@ class Memory implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function chmod($path, $value)
+    public function chmod($path, $value): bool
     {
         $node = $this->at($path);
         if (null === $node || !is_numeric($value)) {
@@ -353,7 +353,7 @@ class Memory implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function mkdir($path, $mode = 0777, $recursive = false)
+    public function mkdir($path, $mode = 0777, $recursive = false): bool
     {
         if (null !== $this->at($path)) {
             trigger_error("mkdir(): File exists");
@@ -400,7 +400,7 @@ class Memory implements Adapter
      * @param  string  $path
      * @return boolean
      */
-    public function createFile($path)
+    public function createFile($path): bool
     {
         $node = $this->at($path);
         if ($node !== null && $node->type == 'dir') {

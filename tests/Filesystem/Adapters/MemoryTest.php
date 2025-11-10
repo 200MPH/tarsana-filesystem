@@ -27,14 +27,14 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->m = $m;
     }
 
-    public function test_realpath()
+    public function test_realpath(): void
     {
         $this->assertEquals(getcwd() . '/foo', $this->m->realpath('./foo'));
         $this->assertEquals(getcwd() . '/foo', $this->m->realpath('./foo/bar/../.'));
         $this->assertEquals(getcwd() . '/foo', $this->m->realpath('foo/./bar/..'));
     }
 
-    public function test_glob()
+    public function test_glob(): void
     {
 
         $this->assertEquals([], $this->m->glob('aa/*'));
@@ -42,40 +42,40 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertEquals([getcwd() . '/foo', getcwd() . '/lorem'], $this->m->glob('*'));
     }
 
-    public function test_isFile()
+    public function test_isFile(): void
     {
         $this->assertTrue($this->m->isFile('foo/todo.txt'));
         $this->assertFalse($this->m->isFile('foo/bar'));
         $this->assertFalse($this->m->isFile('foo/missing'));
     }
 
-    public function test_isDir()
+    public function test_isDir(): void
     {
         $this->assertTrue($this->m->isDir('foo/bar'));
         $this->assertFalse($this->m->isDir('foo/todo.txt'));
         $this->assertFalse($this->m->isDir('foo/missing'));
     }
 
-    public function test_fileExists()
+    public function test_fileExists(): void
     {
         $this->assertTrue($this->m->fileExists('foo/bar'));
         $this->assertTrue($this->m->fileExists('foo/todo.txt'));
         $this->assertFalse($this->m->fileExists('foo/missing'));
     }
 
-    public function test_md5File()
+    public function test_md5File(): void
     {
         $this->assertEquals(md5('Write Awesome Code'), $this->m->md5File('foo/todo.txt'));
         $this->assertFalse($this->m->md5File('foo/missing.txt'));
     }
 
-    public function test_fileGetContents()
+    public function test_fileGetContents(): void
     {
         $this->assertEquals('Write Awesome Code', $this->m->fileGetContents('foo/todo.txt'));
         $this->assertFalse($this->m->fileGetContents('foo/missing.txt'));
     }
 
-    public function test_filePutContents()
+    public function test_filePutContents(): void
     {
         $this->m->filePutContents('foo/todo.txt', 'Get Enough Sleep');
         $this->m->filePutContents('foo/missing.txt', 'Hello');
@@ -85,7 +85,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertEquals('Hello World', $this->m->fileGetContents('foo/missing.txt'));
     }
 
-    public function test_isReadable()
+    public function test_isReadable(): void
     {
         $this->m->chmod('foo/todo.txt', 0220);
         $this->m->chmod('foo/bar', 0220);
@@ -97,7 +97,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertTrue($this->m->isReadable('foo/bar'));
     }
 
-    public function test_isWritable()
+    public function test_isWritable(): void
     {
         $this->m->chmod('foo/todo.txt', 0555);
         $this->m->chmod('foo/bar', 0555);
@@ -109,7 +109,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertTrue($this->m->isWritable('foo/bar'));
     }
 
-    public function test_isExecutable()
+    public function test_isExecutable(): void
     {
         $this->m->chmod('foo/todo.txt', 0666);
         $this->m->chmod('foo/bar', 0666);
@@ -121,14 +121,14 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertTrue($this->m->isExecutable('foo/bar'));
     }
 
-    public function test_unlink()
+    public function test_unlink(): void
     {
         $this->assertTrue($this->m->fileExists('foo/todo.txt'));
         $this->m->unlink('foo/todo.txt');
         $this->assertFalse($this->m->fileExists('foo/todo.txt'));
     }
 
-    public function test_rmdir()
+    public function test_rmdir(): void
     {
         $this->assertTrue($this->m->fileExists('foo/bar/baz'));
         $this->assertTrue($this->m->rmdir('foo/bar/baz'));
@@ -138,7 +138,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertTrue($this->m->fileExists('foo/bar'));
     }
 
-    public function test_rename()
+    public function test_rename(): void
     {
         $this->assertTrue($this->m->rename('foo/todo.txt', 'foo/tasks.txt'));
         $this->assertFalse($this->m->fileExists('foo/todo.txt'));
@@ -156,7 +156,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertTrue($this->m->fileExists('lorem/new/aww.jpg'));
     }
 
-    public function test_fileperms_chmod()
+    public function test_fileperms_chmod(): void
     {
         $this->m->chmod('foo/todo.txt', 0666);
         $this->assertEquals(0666, $this->m->fileperms('foo/todo.txt'));
@@ -166,7 +166,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertFalse($this->m->fileperms('foo/missing.txt'));
     }
 
-    public function test_extension()
+    public function test_extension(): void
     {
         $this->assertEquals('jpg', $this->m->extension('foo/bar/aww.jpg'));
         $this->assertEquals('txt', $this->m->extension('foo/todo.txt'));
@@ -174,7 +174,7 @@ class MemoryTest extends PHPUnit\Framework\TestCase
         $this->assertEquals('', $this->m->extension('foo/bar'));
     }
 
-    public function test_basename()
+    public function test_basename(): void
     {
         $this->assertEquals('aww.jpg', $this->m->basename('foo/bar/aww.jpg'));
         $this->assertEquals('todo.txt', $this->m->basename('foo/todo.txt'));

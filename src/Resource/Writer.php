@@ -39,7 +39,7 @@ class Writer extends ResourceHanlder implements WriterInterface
      *
      * @return string
      */
-    protected function defaultMode()
+    protected function defaultMode(): string
     {
         return 'r+b';
     }
@@ -49,7 +49,7 @@ class Writer extends ResourceHanlder implements WriterInterface
      *
      * @return string|resource
      */
-    protected function defaultResource()
+    protected function defaultResource(): string
     {
         return 'php://stdout';
     }

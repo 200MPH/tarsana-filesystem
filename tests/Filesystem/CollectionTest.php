@@ -24,7 +24,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         ]);
     }
 
-    public function test_adding_and_counting_elements()
+    public function test_adding_and_counting_elements(): void
     {
         $this->assertEquals(6, $this->collection->count());
 
@@ -36,20 +36,20 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(7, $this->collection->count());
     }
 
-    public function test_contains()
+    public function test_contains(): void
     {
         $this->assertTrue($this->collection->contains($this->tempPath . 'file1.txt'));
         $this->assertFalse($this->collection->contains($this->tempPath . 'file.txt'));
     }
 
-    public function test_gets_file_or_directory_by_path()
+    public function test_gets_file_or_directory_by_path(): void
     {
         $file = $this->collection->get($this->tempPath . 'file1.txt');
         $this->assertTrue($file instanceof File);
         $this->assertEquals('file1.txt', $file->name());
     }
 
-    public function test_updates_paths_automatically()
+    public function test_updates_paths_automatically(): void
     {
         $file = $this->collection->get($this->tempPath . 'file1.txt');
         $this->assertFalse($this->collection->contains($this->tempPath . 'other.txt'));
@@ -57,7 +57,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         $this->assertTrue($this->collection->contains($this->tempPath . 'other.txt'));
     }
 
-    public function test_gets_all()
+    public function test_gets_all(): void
     {
         $array = $this->collection->asArray();
 
@@ -65,7 +65,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(6, count($array));
     }
 
-    public function test_gets_files()
+    public function test_gets_files(): void
     {
         $files = $this->collection->files();
 
@@ -73,7 +73,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(3, $files->count());
     }
 
-    public function test_gets_directories()
+    public function test_gets_directories(): void
     {
         $dirs = $this->collection->dirs();
 
@@ -81,7 +81,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(3, $dirs->count());
     }
 
-    public function test_gets_first_element()
+    public function test_gets_first_element(): void
     {
         $this->assertEquals(
             $this->tempPath . 'file1.txt',
@@ -89,7 +89,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    public function test_gets_last_element()
+    public function test_gets_last_element(): void
     {
         $this->assertEquals(
             $this->tempPath . 'dir1/file11.txt',
@@ -97,7 +97,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    public function test_gets_array_of_names()
+    public function test_gets_array_of_names(): void
     {
         $this->assertEquals(
             ['file1.txt', 'file2.txt', 'dir1', 'dir2', 'dir11', 'file11.txt'],
@@ -105,7 +105,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    public function test_gets_array_of_paths()
+    public function test_gets_array_of_paths(): void
     {
         $this->assertEquals(
             [
@@ -120,7 +120,7 @@ class CollectionTest extends PHPUnit\Framework\TestCase
         );
     }
 
-    public function test_removes_element_by_path()
+    public function test_removes_element_by_path(): void
     {
         $this->assertTrue($this->collection->contains($this->tempPath . 'dir1'));
 
