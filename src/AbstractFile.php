@@ -40,10 +40,11 @@ abstract class AbstractFile implements AbstractFileInterface
      * @param string $path
      */
     public function __construct(/**
-     * Absolute path to the file.
-     */
-    protected $path, Adapter $adapter = null)
-    {
+         * Absolute path to the file.
+         */
+        protected $path,
+        ?Adapter $adapter = null
+    ) {
         $this->adapter = $adapter ?? Local::instance();
         $this->pathListeners = [];
         $this->fs = null; // will create it when needed
@@ -113,7 +114,7 @@ abstract class AbstractFile implements AbstractFileInterface
             throw new FilesystemException("Cannot rename the file '{$this->path}' to '{$value}' because a file already exists");
         }
 
-        (new static($value, $this->adapter))->remove();
+        new static($value, $this->adapter)->remove();
 
         if (! $this->adapter->rename($this->path, $value)) {
             throw new FilesystemException("Cannot rename the file '{$this->path}' to '{$value}'");

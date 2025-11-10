@@ -36,7 +36,7 @@ class Filesystem implements FilesystemInterface
      * @param Tarsana\Filesystem\Interfaces\Adapter $adapter
      * @throws FilesystemException If root path is not a directory.
      **/
-    public function __construct($rootPath, Adapter $adapter = null)
+    public function __construct($rootPath, ?Adapter $adapter = null)
     {
         if (null === $adapter) {
             $adapter = Local::instance();

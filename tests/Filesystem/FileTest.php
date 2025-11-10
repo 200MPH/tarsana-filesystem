@@ -159,7 +159,7 @@ class FileTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(DEMO_DIR . '/copies/new-temp.txt', $copy->path());
         $this->assertEquals('Some content', file_get_contents(DEMO_DIR . '/copies/new-temp.txt'));
 
-        (new Directory(DEMO_DIR . '/copies'))->remove();
+        new Directory(DEMO_DIR . '/copies')->remove();
     }
 
     public function test_gets_hash()
