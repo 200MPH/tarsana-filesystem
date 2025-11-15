@@ -1,4 +1,6 @@
-<?php namespace Tarsana\Filesystem\Resource;
+<?php
+
+namespace Tarsana\Filesystem\Resource;
 
 use Tarsana\Filesystem\Interfaces\Resource\Writer as WriterInterface;
 use Tarsana\Filesystem\Exceptions\ResourceException;
@@ -6,8 +8,8 @@ use Tarsana\Filesystem\Exceptions\ResourceException;
 /**
  * Writes content to a resource.
  */
-class Writer extends ResourceHanlder implements WriterInterface {
-
+class Writer extends ResourceHanlder implements WriterInterface
+{
     /**
      * Writes content.
      *
@@ -15,8 +17,9 @@ class Writer extends ResourceHanlder implements WriterInterface {
      */
     public function write($content)
     {
-        if(false === fwrite($this->resource, $content))
+        if (false === fwrite($this->resource, $content)) {
             throw new ResourceException("Unable to write content to resource");
+        }
         return $this;
     }
 
@@ -36,7 +39,7 @@ class Writer extends ResourceHanlder implements WriterInterface {
      *
      * @return string
      */
-    protected function defaultMode()
+    protected function defaultMode(): string
     {
         return 'r+b';
     }
@@ -46,7 +49,7 @@ class Writer extends ResourceHanlder implements WriterInterface {
      *
      * @return string|resource
      */
-    protected function defaultResource()
+    protected function defaultResource(): string
     {
         return 'php://stdout';
     }
@@ -61,5 +64,4 @@ class Writer extends ResourceHanlder implements WriterInterface {
     {
         return $this->isWritable($resource);
     }
-
 }

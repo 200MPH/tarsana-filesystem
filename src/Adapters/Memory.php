@@ -1,10 +1,11 @@
-<?php namespace Tarsana\Filesystem\Adapters;
+<?php
+
+namespace Tarsana\Filesystem\Adapters;
 
 use Tarsana\Filesystem\Interfaces\Adapter;
 
-
-class Memory implements Adapter {
-
+class Memory implements Adapter
+{
     /**
      * Associative array of files and directories.
      * [
@@ -43,10 +44,11 @@ class Memory implements Adapter {
         $path = $this->realpath($path);
 
         if (false === $value) {
-            if (isset($this->files[$path]))
+            if (isset($this->files[$path])) {
                 return $this->files[$path];
-            else
+            } else {
                 return null;
+            }
         }
 
         if (null === $value) {
@@ -66,7 +68,7 @@ class Memory implements Adapter {
      */
     public function isAbsolute($path)
     {
-        return substr($path, 0, 1) == '/';
+        return str_starts_with($path, '/');
     }
 
     /**
@@ -87,7 +89,7 @@ class Memory implements Adapter {
         foreach ($parts as $part) {
             if ($part == '..') {
                 array_pop($path);
-            } else if ($part != '.') {
+            } elseif ($part != '.') {
                 array_push($path, $part);
             }
         }
@@ -100,14 +102,15 @@ class Memory implements Adapter {
      * @param  string $pattern
      * @return array
      */
-    public function glob($pattern)
+    public function glob($pattern): array
     {
         $matched = [];
         $pattern = $this->realpath($pattern);
-        $pattern = '@^' . str_replace(['\*', '\?'], ['[^\\\/]*', '.'], preg_quote($pattern)) .'$@';
+        $pattern = '@^' . str_replace(['\*', '\?'], ['[^\\\/]*', '.'], preg_quote($pattern)) . '$@';
         foreach (array_keys($this->files) as $path) {
-            if (preg_match($pattern, $path))
+            if (preg_match($pattern, (string) $path)) {
                 $matched[] = $path;
+            }
         }
         return $matched;
     }
@@ -155,9 +158,10 @@ class Memory implements Adapter {
      */
     public function md5File($path)
     {
-        if (! $this->isFile($path))
+        if (! $this->isFile($path)) {
             return false;
-        return md5($this->at($path)->content);
+        }
+        return md5((string) $this->at($path)->content);
     }
 
     /**
@@ -168,8 +172,9 @@ class Memory implements Adapter {
      */
     public function fileGetContents($path)
     {
-        if (! $this->isFile($path))
+        if (! $this->isFile($path)) {
             return false;
+        }
         return $this->at($path)->content;
     }
 
@@ -179,14 +184,16 @@ class Memory implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function filePutContents($path, $content, $flags = 0)
+    public function filePutContents($path, $content, $flags = 0): bool
     {
-        if (! $this->isFile($path) && !$this->createFile($path))
+        if (! $this->isFile($path) && !$this->createFile($path)) {
             return false;
-        if (($flags & FILE_APPEND) == FILE_APPEND)
+        }
+        if (($flags & FILE_APPEND) == FILE_APPEND) {
             $this->at($path)->content .= $content;
-        else
+        } else {
             $this->at($path)->content = $content;
+        }
         return true;
     }
 
@@ -237,7 +244,7 @@ class Memory implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function unlink($path)
+    public function unlink($path): bool
     {
         $this->at($path, null);
         return true;
@@ -249,12 +256,12 @@ class Memory implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function rmdir($path)
+    public function rmdir($path): bool
     {
         $path = $this->realpath($path) . '/';
         $length = strlen($path);
         foreach (array_keys($this->files) as $filename) {
-            if (substr($filename, 0, $length) === $path) {
+            if (substr((string) $filename, 0, $length) === $path) {
                 return false;
             }
         }
@@ -268,13 +275,14 @@ class Memory implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function rename($oldPath, $newPath)
+    public function rename($oldPath, $newPath): bool
     {
         $old = $this->at($oldPath);
         $new = $this->at($newPath);
 
-        if (null === $old || (null !== $new && 'dir' === $new->type))
+        if (null === $old || (null !== $new && 'dir' === $new->type)) {
             return false;
+        }
 
         if ('file' === $old->type) {
             $this->at($newPath, $old);
@@ -286,8 +294,8 @@ class Memory implements Adapter {
             $newPath = $this->realpath($newPath) . '/';
             $length = strlen($oldPath);
             foreach (array_keys($this->files) as $childPath) {
-                if (substr($childPath, 0, $length) === $oldPath) {
-                    $newChildPath = $newPath . substr($childPath, $length);
+                if (substr((string) $childPath, 0, $length) === $oldPath) {
+                    $newChildPath = $newPath . substr((string) $childPath, $length);
                     $this->at($newChildPath, $this->at($childPath));
                     $this->at($childPath, null);
                 }
@@ -318,7 +326,7 @@ class Memory implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function chmod($path, $value)
+    public function chmod($path, $value): bool
     {
         $node = $this->at($path);
         if (null === $node || !is_numeric($value)) {
@@ -345,7 +353,7 @@ class Memory implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function mkdir($path, $mode = 0777, $recursive = false)
+    public function mkdir($path, $mode = 0777, $recursive = false): bool
     {
         if (null !== $this->at($path)) {
             trigger_error("mkdir(): File exists");
@@ -361,8 +369,8 @@ class Memory implements Adapter {
             $node = $this->at($item);
             if ($node === null) {
                 $missing[] = $item;
-            } else if ($node->type == 'file') {
-                $filesCount ++;
+            } elseif ($node->type == 'file') {
+                $filesCount++;
             }
         }
 
@@ -384,7 +392,7 @@ class Memory implements Adapter {
         }
 
         return true;
-   }
+    }
 
     /**
      * Creates a new empty file, overrite.
@@ -392,7 +400,7 @@ class Memory implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function createFile($path)
+    public function createFile($path): bool
     {
         $node = $this->at($path);
         if ($node !== null && $node->type == 'dir') {
@@ -434,5 +442,4 @@ class Memory implements Adapter {
     {
         return basename($path);
     }
-
 }

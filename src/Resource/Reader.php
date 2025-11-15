@@ -1,4 +1,6 @@
-<?php namespace Tarsana\Filesystem\Resource;
+<?php
+
+namespace Tarsana\Filesystem\Resource;
 
 use Tarsana\Filesystem\Exceptions\ResourceException;
 use Tarsana\Filesystem\Interfaces\Resource\Reader as ReaderInterface;
@@ -6,8 +8,8 @@ use Tarsana\Filesystem\Interfaces\Resource\Reader as ReaderInterface;
 /**
  * Reads content from a resource.
  */
-class Reader extends ResourceHanlder implements ReaderInterface {
-
+class Reader extends ResourceHanlder implements ReaderInterface
+{
     /**
      * Reads a number of chars/bytes from the stream.
      * If `$count == 0`; reads all the available content.
@@ -71,7 +73,7 @@ class Reader extends ResourceHanlder implements ReaderInterface {
      *
      * @return string
      */
-    protected function defaultMode()
+    protected function defaultMode(): string
     {
         return 'rb';
     }
@@ -81,7 +83,7 @@ class Reader extends ResourceHanlder implements ReaderInterface {
      *
      * @return string|resource
      */
-    protected function defaultResource()
+    protected function defaultResource(): string
     {
         return 'php://stdin';
     }
@@ -96,5 +98,4 @@ class Reader extends ResourceHanlder implements ReaderInterface {
     {
         return $this->isReadable($resource);
     }
-
 }

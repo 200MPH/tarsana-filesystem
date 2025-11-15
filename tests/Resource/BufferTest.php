@@ -3,20 +3,20 @@
 use Tarsana\Filesystem\Adapters\Local;
 use Tarsana\Filesystem\Resource\Buffer;
 
-class BufferTest extends PHPUnit\Framework\TestCase {
-
+class BufferTest extends PHPUnit\Framework\TestCase
+{
     protected $buffer;
 
     protected $path;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->path = DEMO_DIR.'/temp.txt';
+        $this->path = DEMO_DIR . '/temp.txt';
         file_put_contents($this->path, "Hello World !");
         $this->buffer = new Buffer($this->path);
     }
 
-    public function test_reads_content()
+    public function test_reads_content(): void
     {
         $this->assertEquals(
             "Hello World !",
@@ -24,14 +24,14 @@ class BufferTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    public function test_non_blocking()
+    public function test_non_blocking(): void
     {
-        $in = new Buffer;
+        $in = new Buffer();
         $in->blocking(false);
         $this->assertEquals("", $in->read());
     }
 
-    public function test_close()
+    public function test_close(): void
     {
         $resource = fopen('php://memory', 'r+');
         $in = new Buffer($resource);
@@ -40,13 +40,13 @@ class BufferTest extends PHPUnit\Framework\TestCase {
         $this->assertFalse(is_resource($resource));
     }
 
-    public function test_writes_content()
+    public function test_writes_content(): void
     {
         $this->buffer->write(" Hello");
         $this->assertEquals("Hello World ! Hello", file_get_contents($this->path));
     }
 
-    public function test_reads_and_writes_content()
+    public function test_reads_and_writes_content(): void
     {
         $this->assertEquals("Hello ", $this->buffer->read(6));
         $this->buffer->write(' Yo');
@@ -73,17 +73,14 @@ class BufferTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\ResourceException
-     */
-    public function test_throws_exception_if_empty_ending_word_given()
+    public function test_throws_exception_if_empty_ending_word_given(): void
     {
+        $this->expectException(\Tarsana\Filesystem\Exceptions\ResourceException::class);
         $this->buffer->readUntil('');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        remove(DEMO_DIR.'/temp.txt');
+        remove(DEMO_DIR . '/temp.txt');
     }
-
 }

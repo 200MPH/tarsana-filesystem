@@ -1,10 +1,12 @@
-<?php namespace Tarsana\Filesystem\Interfaces;
+<?php
+
+namespace Tarsana\Filesystem\Interfaces;
 
 /**
  * Finds and handles files and directories within a root directory.
  */
-interface Filesystem {
-
+interface Filesystem
+{
     /**
      * Gets the root path.
      *
@@ -197,5 +199,4 @@ interface Filesystem {
      * @return Tarsana\Filesystem\Interfaces
      */
     public function removeAll($paths);
-
 }

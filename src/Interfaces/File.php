@@ -1,8 +1,9 @@
-<?php namespace Tarsana\Filesystem\Interfaces;
+<?php
 
+namespace Tarsana\Filesystem\Interfaces;
 
-interface File extends AbstractFile {
-
+interface File extends AbstractFile
+{
     /**
      * Gets a hash of the file/directory content.
      *
@@ -50,5 +51,4 @@ interface File extends AbstractFile {
      * @return boolean
      */
     public function isExecutable();
-
 }

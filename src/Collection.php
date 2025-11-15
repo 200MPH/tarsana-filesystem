@@ -1,11 +1,13 @@
-<?php namespace Tarsana\Filesystem;
+<?php
+
+namespace Tarsana\Filesystem;
 
 use Tarsana\Filesystem\Interfaces\Collection as CollectionInterface;
 use Tarsana\Filesystem\Interfaces\Directory as DirectoryInterface;
 use Tarsana\Filesystem\Interfaces\File as FileInterface;
 
-class Collection implements CollectionInterface {
-
+class Collection implements CollectionInterface
+{
     /**
      * Array containing the items, it's indexed by the
      * path of items and holds other informations
@@ -41,10 +43,10 @@ class Collection implements CollectionInterface {
             foreach ($item as $element) {
                 $this->add($element);
             }
-        } else if (! $this->contains($item->path())) {
+        } elseif (! $this->contains($item->path())) {
             $this->items[$item->path()] = [
                 'instance' => $item,
-                'listener_index' => $item->addPathListener([$this, 'updatePath'])
+                'listener_index' => $item->addPathListener($this->updatePath(...))
             ];
         }
         return $this;
@@ -95,13 +97,9 @@ class Collection implements CollectionInterface {
      */
     public function files()
     {
-        $filesList = array_filter($this->items, function($item) {
-            return ($item['instance'] instanceof FileInterface);
-        });
+        $filesList = array_filter($this->items, fn($item): bool => $item['instance'] instanceof FileInterface);
 
-        $filesList = array_map(function($item) {
-            return $item['instance'];
-        }, $filesList);
+        $filesList = array_map(fn($item) => $item['instance'], $filesList);
 
         return new Collection($filesList);
     }
@@ -113,13 +111,9 @@ class Collection implements CollectionInterface {
      */
     public function dirs()
     {
-        $filesList = array_filter($this->items, function($item) {
-            return ($item['instance'] instanceof DirectoryInterface);
-        });
+        $filesList = array_filter($this->items, fn($item): bool => $item['instance'] instanceof DirectoryInterface);
 
-        $filesList = array_map(function($item) {
-            return $item['instance'];
-        }, $filesList);
+        $filesList = array_map(fn($item) => $item['instance'], $filesList);
 
         return new Collection($filesList);
     }
@@ -131,9 +125,7 @@ class Collection implements CollectionInterface {
      */
     public function asArray()
     {
-        return array_map(function($item) {
-            return $item['instance'];
-        }, $this->items);
+        return array_map(fn($item) => $item['instance'], $this->items);
     }
 
     /**
@@ -181,7 +173,7 @@ class Collection implements CollectionInterface {
      */
     public function names()
     {
-        return array_map('basename', array_keys($this->items));
+        return array_map(basename(...), array_keys($this->items));
     }
 
     /**
@@ -213,5 +205,4 @@ class Collection implements CollectionInterface {
         }
         return $this;
     }
-
 }

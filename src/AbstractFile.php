@@ -1,5 +1,6 @@
-<?php namespace Tarsana\Filesystem;
+<?php
 
+namespace Tarsana\Filesystem;
 
 use Tarsana\Filesystem\Filesystem;
 use Tarsana\Filesystem\Adapters\Local;
@@ -7,16 +8,8 @@ use Tarsana\Filesystem\Interfaces\Adapter;
 use Tarsana\Filesystem\Exceptions\FilesystemException;
 use Tarsana\Filesystem\Interfaces\AbstractFile as AbstractFileInterface;
 
-
-abstract class AbstractFile implements AbstractFileInterface {
-
-    /**
-     * Absolute path to the file.
-     *
-     * @var string
-     */
-    protected $path;
-
+abstract class AbstractFile implements AbstractFileInterface
+{
     /**
      * The filesystem instance having the same path
      * if this is directory and poiting to the
@@ -46,10 +39,13 @@ abstract class AbstractFile implements AbstractFileInterface {
      *
      * @param string $path
      */
-    public function __construct($path, Adapter $adapter = null)
-    {
-        $this->adapter = (null !== $adapter) ? $adapter : Local::instance();
-        $this->path = $path;
+    public function __construct(/**
+         * Absolute path to the file.
+         */
+        protected $path,
+        ?Adapter $adapter = null
+    ) {
+        $this->adapter = $adapter ?? Local::instance();
         $this->pathListeners = [];
         $this->fs = null; // will create it when needed
 
@@ -118,7 +114,7 @@ abstract class AbstractFile implements AbstractFileInterface {
             throw new FilesystemException("Cannot rename the file '{$this->path}' to '{$value}' because a file already exists");
         }
 
-        (new static($value, $this->adapter))->remove();
+        new static($value, $this->adapter)->remove();
 
         if (! $this->adapter->rename($this->path, $value)) {
             throw new FilesystemException("Cannot rename the file '{$this->path}' to '{$value}'");
@@ -155,8 +151,7 @@ abstract class AbstractFile implements AbstractFileInterface {
     public function addPathListener($cb)
     {
         $this->pathListeners[] = $cb;
-        end($this->pathListeners);
-        return key($this->pathListeners);
+        return array_key_last($this->pathListeners);
     }
 
     /**
@@ -202,8 +197,9 @@ abstract class AbstractFile implements AbstractFileInterface {
      */
     public function fs()
     {
-        if (null === $this->fs)
+        if (null === $this->fs) {
             $this->fs = new Filesystem($this->getFilesystemPath(), $this->adapter);
+        }
         return $this->fs;
     }
 
@@ -232,14 +228,14 @@ abstract class AbstractFile implements AbstractFileInterface {
      *
      * @return boolean
      */
-    public abstract function exists();
+    abstract public function exists();
 
     /**
      * Creates the file if it doesn't exist.
      *
      * @return Tarsana\Filesystem\AbstractFile
      */
-    public abstract function create();
+    abstract public function create();
 
     /**
      * Throws a FilesystemException meaning that
@@ -249,14 +245,14 @@ abstract class AbstractFile implements AbstractFileInterface {
      *
      * @throws Tarsana\Filesystem\Exceptions\FilesystemException
      */
-    protected abstract function throwUnableToCreate();
+    abstract protected function throwUnableToCreate();
 
     /**
      * Gets the path of the directory or the parent directory if this is a file.
      *
      * @return string
      */
-    protected abstract function getFilesystemPath();
+    abstract protected function getFilesystemPath();
 
     /**
      * Copies the file to the provided destination and returns the copy.
@@ -266,6 +262,5 @@ abstract class AbstractFile implements AbstractFileInterface {
      *
      * @throws Tarsana\Filesystem\Exceptions\FilesystemException if unable to create the destination file.
      */
-    public abstract function copyAs($dest);
-
+    abstract public function copyAs($dest);
 }

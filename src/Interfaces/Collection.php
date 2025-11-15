@@ -1,7 +1,9 @@
-<?php namespace Tarsana\Filesystem\Interfaces;
+<?php
 
-interface Collection {
+namespace Tarsana\Filesystem\Interfaces;
 
+interface Collection
+{
     /**
      * Adds new items to the collection. If an
      * item already exists It will be ignored.
@@ -101,5 +103,4 @@ interface Collection {
      * @return Tarsana\Filesystem\Interfaces\Collection
      */
     public function remove($path);
-
 }

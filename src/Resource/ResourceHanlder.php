@@ -1,12 +1,14 @@
-<?php namespace Tarsana\Filesystem\Resource;
+<?php
+
+namespace Tarsana\Filesystem\Resource;
 
 use Tarsana\Filesystem\Exceptions\ResourceException;
 
 /**
  * Abstract class offering basic methods to handle a resource.
  */
-abstract class ResourceHanlder {
-
+abstract class ResourceHanlder
+{
     /**
      * The resource to handle.
      *
@@ -56,8 +58,9 @@ abstract class ResourceHanlder {
             $data = stream_get_meta_data($this->resource);
             return $data['blocked'];
         }
-        if (stream_set_blocking($this->resource, $mode))
+        if (stream_set_blocking($this->resource, $mode)) {
             return $this;
+        }
         throw new ResourceException("Unable to set the blocking mode of resource");
     }
 
@@ -68,8 +71,9 @@ abstract class ResourceHanlder {
      */
     public function close()
     {
-        if (is_resource($this->resource))
+        if (is_resource($this->resource)) {
             fclose($this->resource);
+        }
         return $this;
     }
 
@@ -130,5 +134,4 @@ abstract class ResourceHanlder {
      * @return boolean
      */
     abstract protected function isValid($resource);
-
 }

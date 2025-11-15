@@ -1,12 +1,13 @@
-<?php namespace Tarsana\Filesystem;
+<?php
+
+namespace Tarsana\Filesystem;
 
 use Tarsana\Filesystem\Interfaces\Directory as DirectoryInterface;
 use Tarsana\Filesystem\Exceptions\FilesystemException;
 use Tarsana\Filesystem\AbstractFile;
 
-
-class Directory extends AbstractFile implements DirectoryInterface {
-
+class Directory extends AbstractFile implements DirectoryInterface
+{
     /**
      * Tells if the directory exists.
      *
@@ -36,7 +37,7 @@ class Directory extends AbstractFile implements DirectoryInterface {
      *
      * @throws Tarsana\Filesystem\Exceptions\FilesystemException
      */
-    protected function throwUnableToCreate()
+    protected function throwUnableToCreate(): never
     {
         throw new FilesystemException("Unable to create the directory '{$this->path}'. A file with the same path already exists.");
     }
@@ -71,5 +72,4 @@ class Directory extends AbstractFile implements DirectoryInterface {
 
         return $copy;
     }
-
 }

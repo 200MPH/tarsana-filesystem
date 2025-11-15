@@ -3,26 +3,24 @@
 use Tarsana\Filesystem\Adapters\Local;
 use Tarsana\Filesystem\Resource\Reader;
 
-class ReaderTest extends PHPUnit\Framework\TestCase {
-
+class ReaderTest extends PHPUnit\Framework\TestCase
+{
     protected $reader;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $path = DEMO_DIR.'/temp.txt';
+        $path = DEMO_DIR . '/temp.txt';
         file_put_contents($path, "Hello World !" . PHP_EOL . "How are you ?");
         $this->reader = new Reader($path);
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\ResourceException
-     */
-    public function test_fails_if_not_readable()
+    public function test_fails_if_not_readable(): void
     {
-        $writer = new Reader(fopen(DEMO_DIR.'/temp.txt', 'w'));
+        $this->expectException(\Tarsana\Filesystem\Exceptions\ResourceException::class);
+        $writer = new Reader(fopen(DEMO_DIR . '/temp.txt', 'w'));
     }
 
-    public function test_reads_whole_content()
+    public function test_reads_whole_content(): void
     {
         $this->assertEquals(
             "Hello World !" . PHP_EOL . "How are you ?",
@@ -30,7 +28,7 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    public function test_reads_one_line()
+    public function test_reads_one_line(): void
     {
         $this->assertEquals(
             "Hello World !",
@@ -38,7 +36,7 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    public function test_reads_until_a_character()
+    public function test_reads_until_a_character(): void
     {
         $this->assertEquals(
             "Hello World !" . PHP_EOL . "How are ",
@@ -46,7 +44,7 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    public function test_reads_until_a_word()
+    public function test_reads_until_a_word(): void
     {
         $this->assertEquals(
             "Hello World !" . PHP_EOL . "How",
@@ -54,7 +52,7 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    public function test_reads_all_if_ending_word_not_found()
+    public function test_reads_all_if_ending_word_not_found(): void
     {
         $this->assertEquals(
             "Hello World !" . PHP_EOL . "How are you ?",
@@ -62,15 +60,13 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    /**
-     * @expectedException Tarsana\Filesystem\Exceptions\ResourceException
-     */
-    public function test_throws_exception_if_empty_ending_word_given()
+    public function test_throws_exception_if_empty_ending_word_given(): void
     {
+        $this->expectException(\Tarsana\Filesystem\Exceptions\ResourceException::class);
         $this->reader->readUntil('');
     }
 
-    public function test_reads_part_of_content()
+    public function test_reads_part_of_content(): void
     {
         $this->assertEquals(
             "Hello",
@@ -88,14 +84,14 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         );
     }
 
-    public function test_non_blocking()
+    public function test_non_blocking(): void
     {
-        $in = new Reader;
+        $in = new Reader();
         $in->blocking(false);
         $this->assertEquals("", $in->read());
     }
 
-    public function test_close()
+    public function test_close(): void
     {
         $resource = fopen('php://memory', 'r');
         $in = new Reader($resource);
@@ -104,8 +100,8 @@ class ReaderTest extends PHPUnit\Framework\TestCase {
         $this->assertFalse(is_resource($resource));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        remove(DEMO_DIR.'/temp.txt');
+        remove(DEMO_DIR . '/temp.txt');
     }
 }

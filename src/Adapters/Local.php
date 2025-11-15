@@ -1,16 +1,17 @@
-<?php namespace Tarsana\Filesystem\Adapters;
+<?php
+
+namespace Tarsana\Filesystem\Adapters;
 
 use Tarsana\Filesystem\Interfaces\Adapter;
 
-
-class Local implements Adapter {
-
+class Local implements Adapter
+{
     /**
      * The singleton instance.
      *
      * @var self
      */
-    protected static $instance = null;
+    protected static $instance;
 
     /**
      * Gets the singleton instance.
@@ -20,7 +21,7 @@ class Local implements Adapter {
     public static function instance()
     {
         if (null === self::$instance) {
-            self::$instance = new Local;
+            self::$instance = new Local();
         }
         return self::$instance;
     }
@@ -28,7 +29,9 @@ class Local implements Adapter {
     /**
      * Priate Constructor.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Tells if the given path is absolute.
@@ -254,11 +257,12 @@ class Local implements Adapter {
      * @param  string  $path
      * @return boolean
      */
-    public function createFile($path)
+    public function createFile($path): bool
     {
         $created = fopen($path, "w");
-        if (false === $created)
+        if (false === $created) {
             return false;
+        }
 
         fclose($created);
         return true;
@@ -285,5 +289,4 @@ class Local implements Adapter {
     {
         return basename($path);
     }
-
 }
